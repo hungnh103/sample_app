@@ -11,4 +11,6 @@ class AccountActivationsController < ApplicationController
       redirect_to root_url
     end
   end
+
+  # test 01
 end
