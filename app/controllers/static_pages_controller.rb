@@ -8,4 +8,22 @@ class StaticPagesController < ApplicationController
 
   def help
   end
+
+  def about
+  end
+
+  def security
+  end
+  
+  def privacy
+  end
+
+  def contact
+  end
+
+  def shop
+  end
+
+  def blog
+  end
 end
