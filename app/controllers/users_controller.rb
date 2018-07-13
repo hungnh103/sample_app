@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find_by id: params[:id]
+    @user = User.find_by! id: params.fetch(:id) {raise IdNotFoundError}
     @microposts = @user.microposts.paginate(page: params[:page])
   end
 
@@ -18,12 +18,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new user_params
-
     if @user.save
-      # Handle a successful save.
-      # log_in @user
-      # flash[:success] = "Welcome to the Sample App!"
-      # redirect_to @user
       UserMailer.account_activation(@user).deliver_now
       flash[:info] = "Please check your email to activate your account."
       redirect_to root_url
@@ -72,17 +67,16 @@ class UsersController < ApplicationController
     params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end
 
-  # Before filters
-  # Confirms a logged-in user.
-
-  # Confirms the correct user.
   def correct_user
     @user = User.find(params[:id])
-    redirect_to(root_url) unless current_user?(@user)
+    if !current_user?(@user)
+      redirect_to(root_url)
+    end
   end
 
-  # Confirms an admin user.
-  def admin_user
-    redirect_to(root_url) unless current_user.admin?
+  def verify_admin!
+    if !current_user.admin?
+      redirect_to(root_url)
+    end
   end
 end
