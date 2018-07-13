@@ -8,5 +8,15 @@ class ApplicationController < ActionController::Base
       flash[:danger] = "Please log in."
       redirect_to login_url
     end
+
+  def hello
+    render html: "Hello, world!"
+  end
+
+  def logged_in_user
+    return if logged_in?
+    store_location
+    flash[:danger] = "Xin hãy đăng nhập."
+    redirect_to login_url
   end
 end
