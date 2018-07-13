@@ -23,6 +23,6 @@ class SessionsController < ApplicationController
   def destroy
     log_out
     # log_out if logged_in?
-    redirect_to "/help"
+    redirect_to help_path
   end
 end
